@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  testapp: 
+    build: ./
+    networks:
+      - new
+    command: ./wait-for-postgres.sh db ./testapp
+    ports:
+      - 8080:8080
+    depends_on:
+      - migrate
+  
+  db:
+    build:
+      context: ./Docker
+      dockerfile: db.Dockerfile
+    networks:
+      new:
+        aliases:
+          - database
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    
+  migrate:
+    restart: always
+    image: migrate/migrate
+    networks:
+      - new
+    volumes:
+      - ./migrations:/migrations
+    command: ["-path", "/migrations", "-database",  "postgres://postgres:postgres@database:5432/avito_test?sslmode=disable", "up", "1"]
+    depends_on:
+      - db
+    
+
+networks:
+      new:
