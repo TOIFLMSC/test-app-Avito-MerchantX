@@ -32,7 +32,7 @@ func Error(w http.ResponseWriter, code int, err error) {
 
 // DownloadFile func
 func DownloadFile(url string, w http.ResponseWriter) error {
-	f, err := os.Create("../storage/test.xlsx")
+	f, err := os.Create("storage/test.xlsx")
 	if err != nil {
 		response := Message(false, "Unable to create xlsx file")
 		Respond(w, response)
@@ -68,7 +68,7 @@ func DownloadFile(url string, w http.ResponseWriter) error {
 
 // UploadFile func
 func UploadFile(w http.ResponseWriter) error {
-	Openfile, err := os.Open("../storage/exporttest.xlsx")
+	Openfile, err := os.Open("storage/exporttest.xlsx")
 	defer Openfile.Close()
 	if err != nil {
 		response := Message(false, "Unable to open created xlsx file")
@@ -124,7 +124,7 @@ func ConvertDataToExcel(offerarray *[]model.Offer, w http.ResponseWriter) error 
 		f.SetCellValue("Sheet1", k, v)
 	}
 
-	err := f.SaveAs("../storage/exporttest.xlsx")
+	err := f.SaveAs("storage/exporttest.xlsx")
 	if err != nil {
 		response := Message(false, "Unable to save xlsx file")
 		Respond(w, response)

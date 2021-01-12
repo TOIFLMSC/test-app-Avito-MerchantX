@@ -8,6 +8,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/TOIFLMSC/spyfall-web-backend v0.0.0-20201218190743-12f1d2701a20
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/golang-migrate/migrate/v4 v4.14.1
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0

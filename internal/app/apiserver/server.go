@@ -40,13 +40,13 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *server) configureRouter() {
 	s.router.Use(handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"})))
-
 	s.router.Use(s.logRequest)
 	s.router.HandleFunc("/offer", s.addNewOffer()).Methods("POST")
 	s.router.HandleFunc("/offer", s.getOfferList()).Methods("GET")
 }
 
 func (s *server) logRequest(next http.Handler) http.Handler {
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		logger := s.logger.WithFields(logrus.Fields{
@@ -102,7 +102,7 @@ func (s *server) addNewOffer() http.HandlerFunc {
 			return
 		}
 
-		file, err := excelize.OpenFile("../storage/test.xlsx")
+		file, err := excelize.OpenFile("storage/test.xlsx")
 		if err != nil {
 			response := u.Message(false, "Unable to open an excel file")
 			u.Respond(w, response)
@@ -119,9 +119,11 @@ func (s *server) addNewOffer() http.HandlerFunc {
 
 		rows, err := file.GetRows("List1")
 		for idx, row := range rows {
+
 			if idx < 1 {
 				continue
 			}
+
 			for _, colCell := range row {
 				dataarray = append(dataarray, colCell)
 			}
@@ -159,6 +161,7 @@ func (s *server) addNewOffer() http.HandlerFunc {
 				}
 
 				amountofnewstrings++
+
 			} else if flag, err := s.store.Offer().CheckForOffer(req.Seller, dataarray[0]); flag == false && err == nil {
 
 				if dataarray[4] == "false" {
@@ -170,6 +173,7 @@ func (s *server) addNewOffer() http.HandlerFunc {
 					}
 
 					amountofdeletedstrings++
+
 				} else if dataarray[4] == "true" {
 
 					convprice, err = strconv.Atoi(dataarray[2])

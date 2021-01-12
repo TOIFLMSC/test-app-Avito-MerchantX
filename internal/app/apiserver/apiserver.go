@@ -2,7 +2,6 @@ package apiserver
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 
 	"github.com/TOIFLMSC/test-app-Avito-MerchantX/internal/app/store/sqlstore"
@@ -15,8 +14,6 @@ func Start(config *Config) error {
 		return err
 	}
 	defer db.Close()
-
-	fmt.Println("DB opened")
 
 	store := sqlstore.New(db)
 

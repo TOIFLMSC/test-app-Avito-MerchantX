@@ -1,4 +1,4 @@
-CREATE TABLE offers (
+CREATE TABLE IF NOT EXISTS offers (
     id bigserial PRIMARY KEY,
     seller VARCHAR NOT NULL,
     offer_id VARCHAR,
